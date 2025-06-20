@@ -1,5 +1,15 @@
+//- 首页模板文件：网站主页的内容模板
+//- 继承layout.jade的基础HTML结构，专注于首页的具体内容
+
+//- 继承父模板layout.jade的完整HTML结构
 extends layout
 
+//- 重写父模板中的content区域，插入首页特有的内容
 block content
+  //- 主标题：显示动态传入的title变量内容
   h1= title
+  //- 欢迎信息：使用Jade的字符串插值语法显示欢迎文本
+  //- #{title} 会被替换为实际的title值
   p Welcome to #{title}
+  //- 用户列表链接：跳转到/users路径，显示用户列表页面
+  a(href="/users") Users

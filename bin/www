@@ -1,90 +1,114 @@
 #!/usr/bin/env node
+// Shebang行：指定使用node解释器来执行此脚本，使得可以直接运行 ./bin/www
 
 /**
- * Module dependencies.
+ * 模块依赖项导入部分
  */
 
-var app = require('../app');
-var debug = require('debug')('express-lc-server:server');
-var http = require('http');
+// 引入主应用模块，这是Express应用的核心实例
+const app = require('../app');
+// 引入debug调试模块，用于输出调试信息，命名空间为'express-lc-server:server'
+const debug = require('debug')('express-lc-server:server');
+// 引入Node.js内置的http模块，用于创建HTTP服务器
+const http = require('http');
 
 /**
- * Get port from environment and store in Express.
+ * 从环境变量获取端口号并存储到Express应用中
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+// 标准化端口号：优先使用环境变量PORT，否则默认使用3000端口
+const port = normalizePort(process.env.PORT || '3000');
+// 将端口号设置到Express应用的配置中，供应用其他部分使用
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * 创建HTTP服务器实例
  */
 
-var server = http.createServer(app);
+// 使用Express应用实例创建HTTP服务器，app作为请求处理器
+const server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * 启动服务器监听指定端口的所有网络接口
  */
 
+// 开始监听指定端口，接受来自所有网络接口的连接
 server.listen(port);
+// 注册错误事件监听器，当服务器发生错误时调用onError函数
 server.on('error', onError);
+// 注册监听事件监听器，当服务器成功开始监听时调用onListening函数
 server.on('listening', onListening);
 
 /**
- * Normalize a port into a number, string, or false.
+ * 端口号标准化函数：将端口值转换为数字、字符串或false
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  // 尝试将端口值解析为十进制整数
+  const port = parseInt(val, 10);
 
+  // 如果解析结果不是数字，说明可能是命名管道
   if (isNaN(port)) {
-    // named pipe
+    // 返回原始值，用于命名管道场景
     return val;
   }
 
+  // 如果端口号是有效的非负整数
   if (port >= 0) {
-    // port number
+    // 返回端口号
     return port;
   }
 
+  // 无效的端口号，返回false
   return false;
 }
 
 /**
- * Event listener for HTTP server "error" event.
+ * HTTP服务器错误事件的监听器函数
  */
 
 function onError(error) {
+  // 如果错误不是由listen系统调用引起的，直接抛出错误
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  // 根据端口类型构建绑定描述字符串
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port    // 命名管道格式
+    : 'Port ' + port;   // 端口号格式
 
-  // handle specific listen errors with friendly messages
+  // 处理特定的监听错误，提供友好的错误消息
   switch (error.code) {
     case 'EACCES':
+      // 权限不足错误：端口需要管理员权限（通常是1024以下的端口）
       console.error(bind + ' requires elevated privileges');
+      // 退出进程，状态码1表示异常退出
       process.exit(1);
       break;
     case 'EADDRINUSE':
+      // 端口被占用错误：另一个程序已经在使用这个端口
       console.error(bind + ' is already in use');
+      // 退出进程，状态码1表示异常退出
       process.exit(1);
       break;
     default:
+      // 其他未知错误，直接抛出
       throw error;
   }
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * HTTP服务器开始监听事件的监听器函数
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  // 获取服务器实际绑定的地址信息
+  const addr = server.address();
+  // 根据地址类型构建绑定描述字符串
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr        // 命名管道格式
+    : 'port ' + addr.port;  // 端口号格式
+  // 使用debug模块输出服务器监听信息，只在调试模式下显示
   debug('Listening on ' + bind);
 }

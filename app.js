@@ -1,21 +1,21 @@
 // 引入http-errors模块，用于创建HTTP错误对象
-var createError = require('http-errors');
+const createError = require('http-errors');
 // 引入express框架，这是项目的核心Web框架
-var express = require('express');
+const express = require('express');
 // 引入path模块，用于处理文件和目录路径
-var path = require('path');
+const path = require('path');
 // 引入cookie-parser中间件，用于解析请求中的cookie数据
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 // 引入morgan日志中间件，用于记录HTTP请求日志
-var logger = require('morgan');
+const logger = require('morgan');
 
 // 引入首页路由模块，处理根路径的请求
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 // 引入用户路由模块，处理/users路径的请求
-var usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 
 // 创建Express应用实例，这是整个应用的核心对象
-var app = express();
+const app = express();
 
 // 设置视图模板文件的存放目录为项目根目录下的views文件夹
 app.set('views', path.join(__dirname, 'views'));

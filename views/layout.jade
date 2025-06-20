@@ -1,7 +1,18 @@
+//- 主布局模板文件：定义所有页面的通用HTML结构和样式
+//- 这是父模板，其他页面模板将继承此布局
+
+//- 声明HTML5文档类型
 doctype html
+//- HTML根元素开始
 html
+  //- 页面头部区域：包含元数据、标题、样式链接等
   head
+    //- 动态页面标题：通过变量title传入，每个页面可以有不同的title
     title= title
+    //- 引入全局CSS样式文件：为所有页面提供统一的视觉风格
     link(rel='stylesheet', href='/stylesheets/style.css')
+  //- 页面主体区域：显示页面的主要内容
   body
+    //- 内容占位符：子模板将在此处插入具体内容
+    //- 使用block content定义可被子模板重写的内容区域
     block content

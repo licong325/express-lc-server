@@ -1,6 +1,16 @@
+//- 错误页面模板文件：用于显示应用中发生的各种错误信息
+//- 继承layout.jade的基础结构，专门处理404、500等HTTP错误的展示
+
+//- 继承父模板layout.jade的完整HTML结构
 extends layout
 
+//- 重写父模板中的content区域，插入错误信息显示内容
 block content
+  //- 错误标题：显示错误的具体消息，如"Not Found"、"Internal Server Error"等
   h1= message
+  //- 错误状态码：显示HTTP状态码，如404、500等
   h2= error.status
+  //- 错误堆栈信息：显示详细的错误调用栈，便于开发调试
+  //- 注意：在生产环境中，error.stack通常为空以保护敏感信息
+  //- 使用pre标签保持堆栈信息的原始格式和缩进
   pre #{error.stack}
